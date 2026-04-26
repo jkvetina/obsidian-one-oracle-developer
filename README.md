@@ -80,12 +80,25 @@ Everything below lives in a clearly fenced override block appended to Baseline's
 - **Struck tags stay legible.** Inside a completed task, tags drop the pill background and render as grey `#999` text so `#project` remains readable without shouting.
 - **Checked checkbox colour.** On light theme, the checked checkbox glyph renders in `#666` so it doesn't fight with the surrounding grey text.
 
+### Blockquotes
+
+- **Italic-serif body.** Quote prose uses `var(--ood-font-heading)` at 16px italic so quotes read as voice, not as a UI element. Padding is 20px left / 16px right on every line. Italic typography is scoped to prose only (`blockquote > p` in Reading view, non-`HyperMD-list-line` quote lines in Live Preview), so lists inside blockquotes still render as lists.
+- **No left bar, soft grey fill.** Reading view drops the `::before` pseudo; Live Preview zeros `.HyperMD-quote` left/right borders and hides the stacked `>` markers via `cm-formatting`. Background is restored explicitly to `var(--background-secondary)`.
+- **Multi-paragraph spacing.** Convention is blank `>` separators (`> A` / `>` / `> B`). Reading view: `margin-block: 0.9em` on `<p>` children with `html body` specificity to beat Baseline's `.markdown-rendered p` reset; first/last paragraphs drop their outer margin so the blockquote's own padding-block holds. Live Preview: zero `padding-block` on `.cm-line.HyperMD-quote` – the empty `>` line's own line-height is the inter-paragraph gap. Embedded HTML `<p>` chunks inside blockquotes also get zeroed inner margins (with first/last reverted) so HTML quotes match native ones.
+- **Caret height fix.** Zero-width space pseudo (`content: "\200B"`) on every `.cm-line.HyperMD-quote::before` so the cursor on an empty `>` line keeps full height. Without this, CM6 has no inline content to derive caret height from once the `>` glyph is hidden.
+
 ### Chrome
 
 - **Hidden frontmatter.** `.metadata-container` is hidden with `display: none !important` in both Live Preview and Reading view. Properties remain editable via command palette and right sidebar.
 - **Tab bar polish.** `.workspace-tab-header` gets `position: relative` + `padding-block: 2px`; the active tab grows a `::after` pseudo underline in `var(--interactive-accent)` at `var(--ood-accent-underline-width)` (2px).
 - **Scrollbar accent on hover/active.** `::-webkit-scrollbar-thumb:hover` and `:active` flip to `var(--interactive-accent)`. Default thumb width unchanged.
 - **Active-line highlight disabled.** `.cm-line.cm-active { background: transparent !important }` – kept as a hook for future accent-tint experiments, currently off.
+
+### Tables
+
+- **Bottom-aligned headers.** Multi-line column labels sit flush with single-line ones above the data row. Reading view works directly because `<th>` is `display: table-cell`. Live Preview wraps each th in a block-level `.table-cell-wrapper` div – the wrapper is set to `display: inline-block; vertical-align: bottom; width: 100%` so the th's own `vertical-align: bottom` actually moves it; the th keeps `display: table-cell` to preserve column geometry.
+- **Header editor blends.** When editing a header cell, Obsidian hides the original wrapper and injects a second one with a live CM6 editor. Selectors are scoped with `:not([style*="display: none"])` so the override doesn't un-hide the original (which would render as a duplicate above the editor). The editor's CM6 layers (`.cm-s-obsidian`, `.cm-editor`, `.cm-scroller`, `.cm-content`, `.cm-line`) are forced transparent so the editor blends with the header background instead of showing CM6's default dark-grey fill.
+- **No grey flash on click.** `:hover`, `:active`, `:focus`, `:focus-within` on `<th>` and `.table-cell-wrapper`, plus `.cm-editor.cm-focused` and `.cm-active` / `.cm-activeLine` are all forced transparent so clicking a header is visually inert.
 
 ### File explorer
 
@@ -99,6 +112,12 @@ Everything below lives in a clearly fenced override block appended to Baseline's
 
 - **Today bold.** `.calendar .today` renders at `font-weight: 700`.
 - **Month accent.** `.calendar .title .month` picks up `var(--interactive-accent)` while `.title .year` stays inherited, so the month is the heavy visual anchor.
+
+## Companion snippets
+
+Optional CSS snippets shipped in `.obsidian/snippets/` that pair with the theme but stay opt-in. Toggle each one via `Settings → Appearance → CSS snippets`.
+
+- **`ood-left-sidebar-tabs`** – Files + Bookmarks left-aligned on a single row, Search rendered icon-only floating right. Overrides the theme's stacked column layout for `.mod-top-left-space` containers; the sidebar collapse toggle stays at the top.
 
 ## Author
 

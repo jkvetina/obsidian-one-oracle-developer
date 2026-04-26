@@ -3298,8 +3298,181 @@ body.theme-light .cm-header-6 {
     line-height: 1.35 !important;
 }
 
-/* (m) Blockquote – reverted to Baseline shape; only --blockquote-background-color is overridden
-   at the top of this block (darker secondary background) */
+/* (m) Blockquote – heading-family italic, 1.125rem (18px @ 16px base),
+   padding-left 16px, no visible left bar, grey background in both views.
+   Bar sources to kill: Reading-view ::before pseudo, HyperMD-quote left border,
+   stacked `>` markers (cm-formatting / cm-formatting-quote).
+   Note: Baseline's .HyperMD-quote uses a 16px bg-colored border for spacing+fill;
+   we zero the border and restore both spacing (padding) and fill (bg) explicitly. */
+/* Padding + layout: applies to every blockquote line (incl. list lines). */
+.markdown-rendered blockquote,
+body .markdown-source-view.mod-cm6 .HyperMD-quote,
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-quote {
+    padding-left: 20px !important;
+    padding-inline-start: 20px !important;
+    padding-right: 16px !important;
+    padding-inline-end: 16px !important;
+}
+/* Italic-serif quote typography: only on prose paragraphs / non-list quote
+   lines. Skip .HyperMD-list-line in Live Preview and skip <ul>/<ol>/<li>
+   in Reading view so lists inside blockquotes render as lists. */
+.markdown-rendered blockquote > p,
+body .markdown-source-view.mod-cm6 .HyperMD-quote:not(.HyperMD-list-line),
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-quote:not(.HyperMD-list-line) {
+    font-family: var(--ood-font-heading) !important;
+    font-style: italic !important;
+    font-size: 16px !important;
+}
+.markdown-rendered blockquote::before,
+.markdown-rendered blockquote::after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    width: 0 !important;
+    border: none !important;
+}
+body .markdown-source-view.mod-cm6 .HyperMD-quote {
+    border-left-width: 0 !important;
+    border-right-width: 0 !important;
+    background-color: var(--background-secondary) !important;
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote::before,
+.markdown-source-view.mod-cm6 .HyperMD-quote::after,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-quote::before,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-quote::after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    width: 0 !important;
+    border: none !important;
+}
+.markdown-source-view.mod-cm6 .HyperMD-quote .cm-formatting-quote,
+.markdown-source-view.mod-cm6 .HyperMD-quote .cm-quote.cm-formatting,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-quote > .cm-formatting:first-child {
+    display: none !important;
+}
+/* Caret anchor: inject a zero-width inline pseudo onto every quote line so
+   CM6 has inline content to derive caret height from. Without this, the
+   cursor on an empty `>` line shrinks to a dot (or vanishes) because the
+   `>` glyph is hidden and there is no other inline content. The `body`
+   prefix beats the bar-killing `::before` reset above. */
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-quote::before {
+    content: "\200B" !important;
+    display: inline !important;
+    color: transparent !important;
+    background: none !important;
+    width: auto !important;
+    border: none !important;
+    position: static !important;
+}
+/* Live Preview: padding-inline-start on .cm-line.HyperMD-quote indents the
+   whole line block uniformly (first + wrapped continuations). text-indent
+   would only shift the first visual line, leaving wraps misaligned. */
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-quote {
+    text-indent: 0 !important;
+}
+/* Reading view: restore paragraph spacing between <p> children inside
+   a blockquote so multi-paragraph quotes (separated by blank `>` lines
+   in Markdown) render with a visible gap. First/last paragraph keep
+   the blockquote's own padding-block. Selector boosted with html body to
+   beat Baseline's `.markdown-rendered p` reset. */
+html body .markdown-rendered blockquote p,
+html body .markdown-preview-view blockquote p {
+    margin-block: 0.9em !important;
+}
+html body .markdown-rendered blockquote p:first-of-type,
+html body .markdown-preview-view blockquote p:first-of-type {
+    margin-block-start: 0 !important;
+}
+html body .markdown-rendered blockquote p:last-of-type,
+html body .markdown-preview-view blockquote p:last-of-type {
+    margin-block-end: 0 !important;
+}
+/* Convention: multi-paragraph blockquotes use blank `>` separators
+   (`> A\n>\n> B`). Reading view gets sibling <p>s with 0.9em margin;
+   Edit mode shows the empty `>` line as a one-line spacer. Both read
+   as separated paragraphs without <br>-as-block tricks. No extra
+   padding-block – the empty `>` line's own line-height is the gap. */
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-quote {
+    padding-block: 0 !important;
+}
+/* Edit mode <p> margins inside blockquotes (only fires for embedded HTML
+   chunks containing <p>; native HyperMD-quote lines are .cm-line not <p>). */
+body .markdown-source-view.mod-cm6 blockquote p {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+body .markdown-source-view.mod-cm6 blockquote p:first-of-type {
+    margin-top: revert !important;
+}
+body .markdown-source-view.mod-cm6 blockquote p:last-of-type {
+    margin-bottom: revert !important;
+}
+
+/* (n2) Table headers – align column labels to the bottom so multi-line
+   headers sit flush with single-line ones above the data row.
+   Reading view: `vertical-align: bottom` on the th cell aligns its inline
+   content to the bottom (works because <th> uses display:table-cell).
+   Live Preview: `.cm-table-widget` wraps each th's content in a
+   block-level `.table-cell-wrapper` div. `vertical-align` on the cell
+   doesn't reposition a block child, so we flex the wrapper itself and
+   push its content to flex-end. Flex is applied to the WRAPPER not the
+   th — keeping `display: table-cell` on the th preserves column geometry. */
+html body .markdown-rendered thead tr,
+html body .markdown-rendered table thead tr,
+html body .cm-html-embed thead tr,
+html body .markdown-source-view.mod-cm6 .cm-table-widget thead tr,
+html body .markdown-source-view.mod-cm6 table thead tr,
+html body .markdown-rendered thead th,
+html body .markdown-rendered table thead th,
+html body .cm-html-embed thead th,
+html body .markdown-source-view.mod-cm6 .cm-table-widget thead th,
+html body .markdown-source-view.mod-cm6 table thead th {
+    vertical-align: bottom !important;
+}
+/* Make the wrapper inline-block so the th's `vertical-align: bottom` actually
+   repositions it. Block-level wrappers ignore vertical-align of the parent
+   table-cell. inline-block + width:100% keeps full cell width without
+   forcing a height. Applies to both the static text wrapper and the live
+   editor wrapper (data-ignore-swipe), so editing keeps the cell text
+   bottom-aligned too.
+   Exclusion: [style*="display: none"] – when a cell is being edited,
+   Obsidian hides the original text wrapper. Our `display: inline-block
+   !important` would otherwise override that and re-show duplicated text. */
+html body .markdown-source-view.mod-cm6 .cm-table-widget thead th > .table-cell-wrapper:not([style*="display: none"]),
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper:not([style*="display: none"]) {
+    display: inline-block !important;
+    vertical-align: bottom !important;
+    width: 100% !important;
+    height: auto !important;
+}
+/* Transparent background on the live editor wrapper inside an active header
+   cell – kill the dark grey CM6 default so the editor blends with the
+   header background. Also covers :hover/:active/:focus/:focus-within on the
+   th and wrapper, plus .cm-active / .cm-activeLine inside, so the brief grey
+   flash during mousedown disappears. */
+html body .markdown-source-view.mod-cm6 thead th,
+html body .markdown-source-view.mod-cm6 thead th:hover,
+html body .markdown-source-view.mod-cm6 thead th:active,
+html body .markdown-source-view.mod-cm6 thead th:focus,
+html body .markdown-source-view.mod-cm6 thead th:focus-within,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper:hover,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper:active,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper:focus,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper:focus-within,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe],
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-s-obsidian,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-editor,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-editor.cm-focused,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-scroller,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-content,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-line,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-line.cm-active,
+html body .markdown-source-view.mod-cm6 thead th > .table-cell-wrapper[data-ignore-swipe] .cm-activeLine {
+    background: transparent !important;
+    background-color: transparent !important;
+}
 
 /* (o) Tags – accent background, white text.
        Font is pinned to concrete values (not vars) so tags inside headings
@@ -3382,6 +3555,29 @@ html body .task-list-item.is-checked a.tag {
 .markdown-rendered b,
 .cm-strong {
     font-weight: 700 !important;
+}
+
+/* Struck text is never bold – overrides (p) so completed-task / ~~...~~
+   bold doesn't compete with the grey strikethrough. */
+html body del strong,
+html body del b,
+html body del .cm-strong,
+html body s strong,
+html body s b,
+html body s .cm-strong,
+html body [data-task="x"] strong,
+html body [data-task="x"] b,
+html body [data-task="x"] .cm-strong,
+html body .HyperMD-task-line[data-task="x"] strong,
+html body .HyperMD-task-line[data-task="x"] b,
+html body .HyperMD-task-line[data-task="x"] .cm-strong,
+html body .task-list-item.is-checked strong,
+html body .task-list-item.is-checked b,
+html body .task-list-item.is-checked .cm-strong,
+html body li[data-task="x"] strong,
+html body li[data-task="x"] b,
+html body li[data-task="x"] .cm-strong {
+    font-weight: 400 !important;
 }
 
 /* (q) Unordered-list bullets – em-dash, color #333.
