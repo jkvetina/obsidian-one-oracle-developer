@@ -3695,7 +3695,7 @@ html body .cm-formatting-list-ul * {
     content: none !important;
 }
 .nav-files-container .nav-file > .tree-item-self.is-active::after {
-    content: "⟵";
+    content: "←";
     position: absolute;
     right: 8px;
     top: 50%;
