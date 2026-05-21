@@ -3699,9 +3699,9 @@ html body .cm-formatting-list-ul * {
     position: absolute;
     right: 8px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) scaleX(1.5);
+    transform-origin: right center;
     color: var(--interactive-accent);
-    font-size: 1.5em;
     font-weight: 600;
     pointer-events: none;
 }
