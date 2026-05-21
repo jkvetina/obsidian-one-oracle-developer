@@ -3688,22 +3688,31 @@ html body .cm-formatting-list-ul * {
     position: relative;
 }
 
-/* (e) Active-file indicator: kill Baseline's leading dot, add a left-arrow
-   floating on the right edge. */
+/* (e) Active-file indicator: replace Baseline's leading dot with a
+   right-edge arrow. Draw it in CSS so the shaft length is stable across fonts. */
 .nav-files-container .nav-file > .tree-item-self.is-active::before {
-    display: none !important;
-    content: none !important;
-}
-.nav-files-container .nav-file > .tree-item-self.is-active::after {
-    content: "←";
+    content: "" !important;
+    display: block !important;
     position: absolute;
     right: 8px;
     top: 50%;
+    width: 24px;
+    height: 3px;
     transform: translateY(-50%);
-    color: var(--interactive-accent);
-    font-size: 1.35em;
-    font-weight: 600;
-    line-height: 1;
+    border-radius: 999px;
+    background: var(--interactive-accent);
+    pointer-events: none;
+}
+.nav-files-container .nav-file > .tree-item-self.is-active::after {
+    content: "" !important;
+    position: absolute;
+    right: 27px;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translateY(-50%) rotate(45deg);
+    border-left: 4px solid var(--interactive-accent);
+    border-bottom: 4px solid var(--interactive-accent);
     pointer-events: none;
 }
 

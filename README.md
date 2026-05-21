@@ -106,7 +106,7 @@ Everything below lives in a clearly fenced override block appended to Baseline's
 - **Dotted indentation guides.** `.tree-item-children` gets `--nav-indentation-guide-width: 2px`, `--nav-indentation-guide-color: #999`, and `border-inline-start-style: dotted`.
 - **Ancestor-chain highlight.** Via `.nav-folder:has(.tree-item-self.is-active)`, every folder on the path to the active file gets its guide in `var(--interactive-accent)` and its folder title in `font-weight: 500` + accent colour.
 - **Tighter nav density.** `.nav-file-title`, `.nav-folder-title` get `padding-block: 3px` and `line-height: 1.6` so deep trees stop feeling loose.
-- **Active file mark.** No border, no background dot – instead a right-aligned `←` arrow injected via `::after` so the active file reads as a cursor mark rather than a selected row.
+- **Active file mark.** No border, no background dot – instead a right-aligned CSS-drawn left arrow so the active file reads as a cursor mark rather than a selected row.
 
 ### Calendar plugin
 
