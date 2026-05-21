@@ -3701,6 +3701,7 @@ html body .cm-formatting-list-ul * {
     top: 50%;
     transform: translateY(-50%);
     color: var(--interactive-accent);
+    font-size: 1.5em;
     font-weight: 600;
     pointer-events: none;
 }
