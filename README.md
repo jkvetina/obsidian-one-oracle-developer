@@ -22,7 +22,7 @@ Now a human version from me:
 - **Readable strikethrough.** Completed tasks, `<del>`, and `<s>` render in grey (#999), and struck bold text is forced back to weight 400 so it never competes with the strike line.
 - **Accent tag pills, visible when struck.** Tags render as solid accent-coloured pills with white text. Inside completed tasks they drop the pill but keep a grey foreground so `#project` stays legible.
 - **Light-theme heading colors.** H1 inherits the user's accent colour; H2–H3 render in `#333`, H4–H6 in `#555`. Dark theme keeps Baseline defaults.
-- **Enhanced file explorer.** Dotted indentation guides, accent-coloured guide + semibold folder titles for the branch containing the active file, and a `←` arrow on the active file (no border, no dot).
+- **Enhanced file explorer.** Dotted indentation guides, accent-coloured guide + semibold folder titles for the branch containing the active file, and a right-edge arrow marker on the active file (no border, no dot).
 - **Small chrome polish.** Tighter tab bar with an accent underline on the active tab, accent-on-hover scrollbars, calendar month in accent.
 - **Everything else from Baseline.** Layout flavours, input styles, callouts, tables, colour schemes, Style Settings integration, light/dark support – untouched.
 
@@ -106,7 +106,7 @@ Everything below lives in a clearly fenced override block appended to Baseline's
 - **Dotted indentation guides.** `.tree-item-children` gets `--nav-indentation-guide-width: 2px`, `--nav-indentation-guide-color: #999`, and `border-inline-start-style: dotted`.
 - **Ancestor-chain highlight.** Via `.nav-folder:has(.tree-item-self.is-active)`, every folder on the path to the active file gets its guide in `var(--interactive-accent)` and its folder title in `font-weight: 500` + accent colour.
 - **Tighter nav density.** `.nav-file-title`, `.nav-folder-title` get `padding-block: 3px` and `line-height: 1.6` so deep trees stop feeling loose.
-- **Active file mark.** No border, no background dot – instead a right-aligned `←` arrow injected via `::after` so the active file reads as a cursor mark rather than a selected row.
+- **Active file mark.** No border, no background dot – instead a right-aligned SVG-shaped arrow injected via `::after` so the active file reads as a cursor mark rather than a selected row.
 
 ### Calendar plugin
 
