@@ -3504,6 +3504,8 @@ html body :is(h1, h2, h3, h4, h5, h6) a.tag {
     line-height: 1 !important;
     text-transform: none !important;
     vertical-align: middle;
+    position: relative;
+    top: -2px;
 }
 
 /* (n) Strikethrough – DOM-verified selectors.
@@ -3720,4 +3722,14 @@ html body .cm-formatting-list-ul * {
 }
 .workspace-leaf-content[data-type="calendar"] .title .year {
     color: inherit !important;
+}
+
+/* ==========================================================================
+   Lists – narrower nested indentation
+   Obsidian default --list-indent is 2em; the per-level step before nested
+   bullets/checkboxes reads too wide. The checkbox-to-label gap is governed
+   by the checkbox margin, not this, so it stays untouched.
+   ========================================================================== */
+body {
+    --list-indent: 1.45em;
 }
