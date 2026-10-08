@@ -1,0 +1,8 @@
+/* OOD font swap – Merriweather headings over Open Sans body */
+/* Toggle ON in Settings → Appearance → CSS snippets */
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');
+
+body {
+    --ood-font-heading: "Merriweather", Georgia, serif;
+}

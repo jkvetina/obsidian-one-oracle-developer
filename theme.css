@@ -3201,6 +3201,17 @@ body {
     height: var(--ood-accent-underline-width);
     background: var(--interactive-accent);
 }
+/* Hovered main-area tab is shaped like the active tab, not a pill: Obsidian
+   paints the hover on the inner element with all four corners rounded. The
+   fill moves to the tab itself with the active tab's radius. That variable is
+   already the full `r r 0 0` shorthand, so it is used as-is. */
+.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header:not(.is-active):hover {
+    background-color: var(--background-modifier-hover);
+    border-radius: var(--tab-radius-active);
+}
+.mod-root .workspace-tabs:not(.mod-stacked) .workspace-tab-header:not(.is-active):hover .workspace-tab-header-inner {
+    background-color: transparent;
+}
 
 /* (d) Active-line highlight – disabled post-test (user preferred no background tint;
        Baseline's ::before on body.active-line-background/block fights our tint with grey) */

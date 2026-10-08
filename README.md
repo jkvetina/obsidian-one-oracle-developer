@@ -46,7 +46,7 @@ Once listed: `Settings → Appearance → Manage → Browse → One Oracle Devel
 
 ## Fonts
 
-Headings use **Source Serif Pro**, falling back to Georgia → Times New Roman → the system serif. Body text uses **Open Sans**, falling back to `system-ui` → `-apple-system` → Segoe UI → the system sans-serif. Both families are pulled in via a Google Fonts `@import` at the top of the override block, so no local install is required – but a local install will render slightly faster on first paint.
+Headings use **Source Serif Pro**, falling back to Georgia → Times New Roman → the system serif. Body text uses **IBM Plex Sans**, falling back to Open Sans → `system-ui` → `-apple-system` → Segoe UI → the system sans-serif. Both families are pulled in via a Google Fonts `@import` at the top of the override block, so no local install is required – but a local install will render slightly faster on first paint.
 
 Swap either family by overriding the `--ood-font-heading` / `--ood-font-body` tokens in a snippet or in Style Settings' custom CSS. The heading scale, weight, and line-height stay pinned regardless of the family you pick.
 
@@ -90,7 +90,8 @@ Everything below lives in a clearly fenced override block appended to Baseline's
 ### Chrome
 
 - **Hidden frontmatter.** `.metadata-container` is hidden with `display: none !important` in both Live Preview and Reading view. Properties remain editable via command palette and right sidebar.
-- **Tab bar polish.** `.workspace-tab-header` gets `position: relative` + `padding-block: 2px`; the active tab grows a `::after` pseudo underline in `var(--interactive-accent)` at `var(--ood-accent-underline-width)` (2px).
+- **Tab bar polish.** `.workspace-tab-header` gets `position: relative` + `padding-block: 2px`; the active tab grows a `::after` pseudo underline in `var(--interactive-accent)` at `var(--ood-accent-underline-width)` (2px). Tab icons are hidden.
+- **Tab-shaped hover.** A hovered main-area tab takes the active tab's outline (`var(--tab-radius-active)`: top corners rounded, bottom square) instead of Obsidian's fully rounded pill on the inner element.
 - **Scrollbar accent on hover/active.** `::-webkit-scrollbar-thumb:hover` and `:active` flip to `var(--interactive-accent)`. Default thumb width unchanged.
 - **Active-line highlight disabled.** `.cm-line.cm-active { background: transparent !important }` – kept as a hook for future accent-tint experiments, currently off.
 
@@ -115,9 +116,15 @@ Everything below lives in a clearly fenced override block appended to Baseline's
 
 ## Companion snippets
 
-Optional CSS snippets shipped in `.obsidian/snippets/` that pair with the theme but stay opt-in. Toggle each one via `Settings → Appearance → CSS snippets`.
+Optional CSS snippets in [`snippets/`](./snippets) that pair with the theme but stay opt-in. Copy the ones you want into your vault's `.obsidian/snippets/`, then toggle each via `Settings → Appearance → CSS snippets`.
 
-- **`ood-left-sidebar-tabs`** – Files + Bookmarks left-aligned on a single row, Search rendered icon-only floating right. Overrides the theme's stacked column layout for `.mod-top-left-space` containers; the sidebar collapse toggle stays at the top.
+- **`ood-left-sidebar-tabs`** – Files + Bookmarks left-aligned on a single row, Search rendered icon-only floating right, rounded tab corners, a Lucide bookmark icon, and the file explorer's New note / New folder / Sort row hidden. Overrides the theme's stacked column layout for `.mod-top-left-space` containers; the sidebar collapse toggle stays at the top.
+- **`ood-task-indent-accent`** – indentation guide lines under nested lists and tasks drawn in the accent colour, in Live Preview and Reading view.
+- **Font swaps** – each sets only `--ood-font-heading` / `--ood-font-body`; enable one at a time:
+  - `ood-fonts-inter` – Inter for headings and body.
+  - `ood-fonts-ibm-plex` – IBM Plex Serif headings, IBM Plex Sans body.
+  - `ood-fonts-merriweather-headings` – Merriweather headings, body unchanged.
+  - `ood-fonts-system-sans` – system sans everywhere, no web fonts.
 
 ## Author
 

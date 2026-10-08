@@ -1,0 +1,22 @@
+/* Indented checkbox/task vertical guide line in accent color */
+
+/* Override the CSS variables (covers reading view + live preview) */
+body {
+    --indentation-guide-color: var(--interactive-accent);
+    --indentation-guide-color-active: var(--interactive-accent);
+}
+
+/* Direct override on the pseudo-elements in live preview */
+.markdown-source-view.mod-cm6 .cm-indent::before {
+    border-inline-end-color: var(--interactive-accent) !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-active-indent::before {
+    border-inline-end-color: var(--interactive-accent) !important;
+}
+
+/* Reading view */
+.markdown-rendered.show-indentation-guide li > ul::before,
+.markdown-rendered.show-indentation-guide li > ol::before {
+    border-inline-end-color: var(--interactive-accent) !important;
+}

@@ -1,0 +1,9 @@
+/* OOD font swap – Inter for both headings and body (modern sans) */
+/* Toggle ON in Settings → Appearance → CSS snippets */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    --ood-font-heading: "Inter", system-ui, sans-serif;
+    --ood-font-body:    "Inter", system-ui, sans-serif;
+}

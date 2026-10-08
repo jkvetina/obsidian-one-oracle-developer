@@ -1,0 +1,7 @@
+/* OOD font swap – system sans everywhere (no web fonts, fastest) */
+/* Toggle ON in Settings → Appearance → CSS snippets */
+
+body {
+    --ood-font-heading: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --ood-font-body:    system-ui, -apple-system, "Segoe UI", sans-serif;
+}
